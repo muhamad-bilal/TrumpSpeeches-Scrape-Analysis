@@ -1,0 +1,72 @@
+{
+  "validation_timestamp": "2025-11-23T02:10:46.726489",
+  "checks": {
+    "row_counts": {
+      "speeches": {
+        "count": 43,
+        "status": "pass"
+      },
+      "dates": {
+        "count": 0,
+        "status": "fail"
+      },
+      "entities": {
+        "persons": 696,
+        "organizations": 491,
+        "locations": 420,
+        "total": 1607,
+        "status": "pass"
+      }
+    },
+    "null_checks": {
+      "total_records": 43,
+      "null_counts": {
+        "speech_id": 0,
+        "title": 0,
+        "date": 43
+      },
+      "completeness": {
+        "speech_id": {
+          "null_count": 0,
+          "completeness_rate": 100.0,
+          "status": "pass"
+        },
+        "title": {
+          "null_count": 0,
+          "completeness_rate": 100.0,
+          "status": "pass"
+        },
+        "date": {
+          "null_count": 43,
+          "completeness_rate": 0.0,
+          "status": "fail"
+        }
+      }
+    },
+    "data_ranges": {
+      "speech_surrogate_key": {
+        "min_value": 1,
+        "max_value": 43,
+        "out_of_range_count": 0,
+        "status": "pass"
+      }
+    },
+    "referential_integrity": {
+      "speech_date_mapping": {
+        "speech_dates": 0,
+        "date_dimension_dates": 0,
+        "missing_dates": 0,
+        "status": "pass"
+      },
+      "entity_speech_mapping": {}
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "total_checks": 5,
+    "passed": 4,
+    "warnings": 0,
+    "failed": 1
+  }
+}

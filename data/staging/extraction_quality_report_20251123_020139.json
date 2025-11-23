@@ -1,0 +1,76 @@
+{
+  "extraction_timestamp": "2025-11-23T02:01:39.035037",
+  "sources": {
+    "raw_data": {
+      "file": "data\\raw\\trump_speeches_20251024_181118.json",
+      "record_count": 43,
+      "extracted": true
+    },
+    "cleaned_data": {
+      "file": "data\\cleaned\\speeches_cleaned_20251123_005742.json",
+      "record_count": 43,
+      "extracted": true
+    },
+    "transformed_data": {
+      "file": "data\\transformed\\speeches_nlp_features_20251123_015211.json",
+      "record_count": 43,
+      "extracted": true
+    },
+    "features_data": {
+      "file": "data\\transformed\\speeches_features_complete_20251123_015659.csv",
+      "record_count": 43,
+      "extracted": true
+    },
+    "entity_catalog": {
+      "file": "data\\entities\\entity_catalog_20251123_015919.json",
+      "entity_count": 2872,
+      "extracted": true
+    }
+  },
+  "quality_checks": {
+    "completeness": {
+      "raw_data": {
+        "status": "present",
+        "record_count": 43
+      },
+      "cleaned_data": {
+        "status": "present",
+        "record_count": 43
+      },
+      "transformed_data": {
+        "status": "present",
+        "record_count": 43
+      },
+      "features_data": {
+        "status": "present",
+        "record_count": 43
+      },
+      "entity_catalog": {
+        "status": "present",
+        "record_count": 4
+      }
+    },
+    "data_types": {
+      "transformed_data": {
+        "has_required_fields": false,
+        "missing_fields": [
+          "sentiment"
+        ]
+      },
+      "features_data": {
+        "has_required_fields": true,
+        "missing_fields": []
+      }
+    },
+    "referential_integrity": {
+      "speech_id_match": {
+        "transformed_count": 43,
+        "features_count": 43,
+        "common_count": 43,
+        "match_rate": 100.0
+      }
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
