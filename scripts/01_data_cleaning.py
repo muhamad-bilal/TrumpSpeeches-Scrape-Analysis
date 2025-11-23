@@ -29,10 +29,8 @@ from utils import (
 
 
 class TranscriptCleaner:
-    """Clean and normalize Trump speech transcripts"""
     
     def __init__(self, config_path: str = "config.yaml"):
-        """Initialize cleaner with configuration"""
         self.config = load_config(config_path)
         self.cleaning_config = self.config['cleaning']
         self.reaction_tags = self.cleaning_config['reaction_tags']
@@ -40,7 +38,6 @@ class TranscriptCleaner:
         self.speaker_patterns = self.cleaning_config['speaker_patterns']
         
     def remove_reaction_tags(self, text: str) -> str:
-        """Remove crowd reaction tags like (applause), [cheers], etc."""
         for tag in self.reaction_tags:
             # Case-insensitive removal
             text = re.sub(re.escape(tag), '', text, flags=re.IGNORECASE)
@@ -52,7 +49,6 @@ class TranscriptCleaner:
         return text
     
     def remove_timestamps(self, text: str) -> str:
-        """Remove timestamp patterns like [00:12:34] or (12:34)"""
         # Remove [HH:MM:SS] or [MM:SS]
         text = re.sub(r'\[\d{1,2}:\d{2}(?::\d{2})?\]', '', text)
         # Remove (HH:MM:SS) or (MM:SS)
@@ -60,7 +56,6 @@ class TranscriptCleaner:
         return text
     
     def standardize_speakers(self, text: str) -> str:
-        """Standardize speaker tags to SPEAKER_TRUMP"""
         for pattern, replacement in self.speaker_patterns.items():
             # Match pattern followed by colon (speaker tag format)
             text = re.sub(f"{pattern}:", f"{replacement}:", text, flags=re.IGNORECASE)
@@ -68,7 +63,6 @@ class TranscriptCleaner:
         return text
     
     def remove_noise_tokens(self, text: str) -> str:
-        """Remove filler words like 'uh', 'um', 'you know'"""
         for token in self.noise_tokens:
             # Use word boundaries to avoid partial matches
             pattern = r'\b' + re.escape(token) + r'\b'
@@ -77,7 +71,6 @@ class TranscriptCleaner:
         return text
     
     def normalize_punctuation(self, text: str) -> str:
-        """Normalize punctuation and quotes"""
         # Normalize quotes
         text = normalize_quotes(text)
         
@@ -92,7 +85,6 @@ class TranscriptCleaner:
         return text
     
     def remove_duplicates(self, text: str) -> str:
-        """Remove duplicate consecutive paragraphs"""
         paragraphs = text.split('\n\n')
         
         # Remove consecutive duplicates
@@ -122,47 +114,25 @@ class TranscriptCleaner:
         return text
     
     def clean_transcript(self, text: str) -> str:
-        """Apply all cleaning steps to a transcript"""
         if not text:
             return ""
         
-        # Step 1: Remove HTML tags
         text = remove_html_tags(text)
-        
-        # Step 2: Remove metadata headers
         text = self.remove_metadata_headers(text)
-        
-        # Step 3: Remove timestamps
         text = self.remove_timestamps(text)
-        
-        # Step 4: Remove reaction tags
         text = self.remove_reaction_tags(text)
-        
-        # Step 5: Standardize speaker tags
         text = self.standardize_speakers(text)
-        
-        # Step 6: Remove noise tokens
         text = self.remove_noise_tokens(text)
-        
-        # Step 7: Normalize punctuation
         text = self.normalize_punctuation(text)
-        
-        # Step 8: Normalize whitespace
         text = clean_whitespace(text)
-        
-        # Step 9: Remove duplicates
         text = self.remove_duplicates(text)
-        
-        # Step 10: Final whitespace cleanup
         text = clean_whitespace(text)
         
         return text
     
     def process_speeches(self, input_file: str) -> List[Dict[str, Any]]:
-        """Process all speeches from input file"""
         print_section("DATA CLEANING PIPELINE")
         
-        # Load data
         print(f"\nLoading data from {input_file}...")
         
         if input_file.endswith('.json'):
@@ -239,11 +209,9 @@ class TranscriptCleaner:
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
-        # Save JSON (full data with both raw and cleaned)
         json_file = output_dir / f"speeches_cleaned_{timestamp}.json"
         save_json(cleaned_speeches, str(json_file))
         
-        # Save CSV (cleaned text only for easy viewing)
         csv_data = []
         for speech in cleaned_speeches:
             csv_data.append({
@@ -259,13 +227,11 @@ class TranscriptCleaner:
         csv_file = output_dir / f"speeches_cleaned_{timestamp}.csv"
         save_csv(df, str(csv_file))
         
-        # Save summary statistics
         self.print_summary(cleaned_speeches)
         
         return str(json_file), str(csv_file)
     
     def print_summary(self, cleaned_speeches: List[Dict[str, Any]]):
-        """Print summary statistics"""
         print_section("SUMMARY STATISTICS")
         
         total_speeches = len(cleaned_speeches)
@@ -285,7 +251,6 @@ class TranscriptCleaner:
 
 
 def main():
-    """Main execution function"""
     import argparse
     
     parser = argparse.ArgumentParser(description='Clean Trump speech transcripts')
@@ -294,14 +259,11 @@ def main():
     
     args = parser.parse_args()
     
-    # Initialize cleaner
     cleaner = TranscriptCleaner(args.config)
     
-    # Process speeches
     cleaned_speeches = cleaner.process_speeches(args.input_file)
     
     if cleaned_speeches:
-        # Save results
         json_file, csv_file = cleaner.save_cleaned_data(cleaned_speeches)
         print(f"\n✓ Cleaning complete!")
         print(f"  JSON: {json_file}")

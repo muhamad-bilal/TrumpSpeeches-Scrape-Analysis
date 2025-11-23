@@ -45,10 +45,8 @@ from utils import (
 
 
 class TranscriptTransformer:
-    """Transform cleaned transcripts with NLP features"""
     
     def __init__(self, config_path: str = "config.yaml"):
-        """Initialize transformer with models"""
         self.config = load_config(config_path)
         self.nlp_config = self.config['nlp']
         
@@ -63,7 +61,6 @@ class TranscriptTransformer:
         except OSError:
             print(f"  Model not found. Downloading...")
             import subprocess
-            # Try with smaller model if transformer model fails
             try:
                 subprocess.run(['python', '-m', 'spacy', 'download', spacy_model], check=True)
                 self.nlp = spacy.load(spacy_model)
@@ -72,12 +69,10 @@ class TranscriptTransformer:
                 subprocess.run(['python', '-m', 'spacy', 'download', 'en_core_web_sm'], check=True)
                 self.nlp = spacy.load('en_core_web_sm')
         
-        # Load VADER sentiment analyzer
         print("Loading VADER sentiment analyzer...")
         self.vader = SentimentIntensityAnalyzer()
         print("✓ VADER loaded")
         
-        # Download NLTK data
         print("Ensuring NLTK data is available...")
         try:
             nltk.data.find('tokenizers/punkt')
@@ -89,7 +84,6 @@ class TranscriptTransformer:
             nltk.download('stopwords', quiet=True)
         print("✓ NLTK data ready")
         
-        # Load sentence transformer for embeddings
         print("Loading sentence transformer...")
         try:
             embedding_model = self.nlp_config.get('embedding_model', 'sentence-transformers/all-MiniLM-L6-v2')
@@ -178,7 +172,6 @@ class TranscriptTransformer:
             emotion_obj = NRCLex(text)
             raw_scores = emotion_obj.affect_frequencies
             
-            # Normalize to standard 8 emotions
             emotions = {
                 'anger': raw_scores.get('anger', 0),
                 'fear': raw_scores.get('fear', 0),
@@ -192,7 +185,6 @@ class TranscriptTransformer:
             
             return emotions
         except Exception as e:
-            # Return zeros if NRCLex fails
             return {
                 'anger': 0, 'fear': 0, 'joy': 0, 'sadness': 0,
                 'surprise': 0, 'disgust': 0, 'trust': 0, 'anticipation': 0
@@ -210,7 +202,6 @@ class TranscriptTransformer:
                 'automated_readability_index': textstat.automated_readability_index(text),
             }
         except Exception as e:
-            # Return default values if calculation fails
             metrics = {
                 'flesch_reading_ease': 0,
                 'flesch_kincaid_grade': 0,
@@ -254,7 +245,6 @@ class TranscriptTransformer:
         return ngram_dict
     
     def generate_embeddings(self, text: str) -> List[float]:
-        """Generate sentence embeddings"""
         if self.embedder is None:
             return []
         
@@ -266,7 +256,6 @@ class TranscriptTransformer:
             return []
     
     def transform_speech(self, speech: Dict[str, Any]) -> Dict[str, Any]:
-        """Apply all transformations to a single speech"""
         text = speech.get('cleaned_text', '')
         
         if not text or len(text) < 10:
@@ -298,7 +287,6 @@ class TranscriptTransformer:
         entity_counts = {k: len(v) for k, v in entities.items()}
         transformed['entity_counts'] = entity_counts
         
-        # Top entities (most frequent)
         for ent_type, ent_list in entities.items():
             if ent_list:
                 top_entities = Counter(ent_list).most_common(10)
@@ -306,15 +294,12 @@ class TranscriptTransformer:
                     {'entity': ent, 'count': count} for ent, count in top_entities
                 ]
         
-        # Sentiment analysis (overall)
         sentiment_overall = self.analyze_sentiment_vader(text)
         transformed['sentiment_overall'] = sentiment_overall
         
-        # Sentiment per sentence
         sentiment_sentences = self.analyze_sentiment_per_sentence(sentences)
         transformed['sentiment_sentences'] = sentiment_sentences
         
-        # Average sentiment across sentences
         avg_sentiment = {
             'neg': np.mean([s['neg'] for s in sentiment_sentences]),
             'neu': np.mean([s['neu'] for s in sentiment_sentences]),
@@ -323,15 +308,12 @@ class TranscriptTransformer:
         }
         transformed['sentiment_average'] = avg_sentiment
         
-        # Emotion classification
         emotions = self.classify_emotions_lexicon(text)
         transformed['emotions'] = emotions
         
-        # Readability metrics
         readability = self.calculate_readability(text)
         transformed['readability'] = readability
         
-        # N-gram extraction
         ngram_range = (
             self.nlp_config.get('ngram_range', {}).get('min', 1),
             self.nlp_config.get('ngram_range', {}).get('max', 3)
@@ -339,7 +321,7 @@ class TranscriptTransformer:
         ngrams_data = self.extract_ngrams(tokens, ngram_range)
         transformed['ngrams'] = ngrams_data
         
-        # Generate embeddings
+        # Generate embddings
         embeddings = self.generate_embeddings(text)
         if embeddings:
             transformed['embeddings'] = embeddings
@@ -419,7 +401,6 @@ class TranscriptTransformer:
             print("Error: No data loaded")
             return []
         
-        # Transform each speech
         print("\nApplying NLP transformations...")
         transformed_speeches = []
         
@@ -447,7 +428,6 @@ class TranscriptTransformer:
         return transformed_speeches
     
     def save_transformed_data(self, transformed_speeches: List[Dict[str, Any]]):
-        """Save transformed speeches"""
         print_section("SAVING TRANSFORMED DATA")
         
         output_dir = Path(self.config['paths']['transformed_data'])
@@ -455,7 +435,6 @@ class TranscriptTransformer:
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
-        # Save full JSON with all NLP features
         json_file = output_dir / f"speeches_nlp_features_{timestamp}.json"
         save_json(transformed_speeches, str(json_file))
         
@@ -475,7 +454,6 @@ def main():
     
     args = parser.parse_args()
     
-    # Initialize transformer
     transformer = TranscriptTransformer(args.config)
     
     # Transform speeches
