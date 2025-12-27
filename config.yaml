@@ -1,0 +1,233 @@
+# Trump Speech Analysis Configuration
+
+# File Paths
+paths:
+  raw_data: "data/raw"
+  cleaned_data: "data/cleaned"
+  transformed_data: "data/transformed"
+  results: "data/results"
+  
+# Data Cleaning Settings
+cleaning:
+  # Crowd reaction tags to remove
+  reaction_tags:
+    - "(applause)"
+    - "(cheers)"
+    - "(laughter)"
+    - "(crosstalk)"
+    - "(inaudible)"
+    - "[applause]"
+    - "[cheers]"
+    - "[laughter]"
+    - "[crosstalk]"
+    - "[inaudible]"
+  
+  # Noise tokens to remove
+  noise_tokens:
+    - "uh"
+    - "um"
+    - "you know"
+    - "like"
+    - "sort of"
+    - "kind of"
+  
+  # Speaker standardization patterns
+  speaker_patterns:
+    "Donald Trump": "SPEAKER_TRUMP"
+    "President Trump": "SPEAKER_TRUMP"
+    "Trump": "SPEAKER_TRUMP"
+    "The President": "SPEAKER_TRUMP"
+
+# NLP Processing Settings
+nlp:
+  # spaCy model
+  spacy_model: "en_core_web_trf"
+  
+  # Trump-specific stop words (in addition to standard English stop words)
+  custom_stopwords:
+    - "folks"
+    - "believe me"
+    - "tremendous"
+    - "beautiful"
+    - "incredible"
+    - "amazing"
+    
+  # N-gram settings
+  ngram_range:
+    min: 1
+    max: 3
+  
+  # Sentiment models
+  sentiment:
+    vader: true
+    transformers_model: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+  
+  # Emotion model
+  emotion:
+    nrclex: true
+    transformers_model: "j-hartmann/emotion-english-distilroberta-base"
+  
+  # Embeddings
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+# Feature Engineering Settings
+features:
+  # Readability metrics
+  readability:
+    - "flesch_kincaid_grade"
+    - "flesch_reading_ease"
+    - "gunning_fog"
+    - "smog_index"
+    - "coleman_liau_index"
+  
+  # Duration estimation
+  words_per_minute: 150
+  
+  # Rhetorical patterns (regex)
+  anaphora_patterns:
+    - "^We will"
+    - "^I will"
+    - "^They are"
+    - "^We are"
+    - "^This is"
+  
+  # Keyword clusters for political analysis
+  keyword_clusters:
+    economy:
+      - "economy"
+      - "jobs"
+      - "trade"
+      - "tariff"
+      - "business"
+      - "manufacturing"
+      - "gdp"
+      - "growth"
+    security:
+      - "security"
+      - "defense"
+      - "military"
+      - "border"
+      - "wall"
+      - "safety"
+      - "terrorism"
+      - "isis"
+    immigration:
+      - "immigration"
+      - "border"
+      - "wall"
+      - "illegal"
+      - "deportation"
+      - "ice"
+      - "asylum"
+    foreign_policy:
+      - "china"
+      - "russia"
+      - "iran"
+      - "north korea"
+      - "trade deal"
+      - "nato"
+      - "alliance"
+
+# Analysis Settings
+analysis:
+  # Topic modeling
+  lda:
+    n_topics: 10
+    passes: 15
+    iterations: 400
+  
+  bertopic:
+    min_topic_size: 5
+    n_neighbors: 15
+    n_components: 5
+  
+  # Temporal analysis
+  temporal:
+    window_size: 5  # speeches for moving average
+    
+# Visualization Settings
+visualization:
+  # Color schemes
+  colors:
+    sentiment_positive: "#2ecc71"
+    sentiment_negative: "#e74c3c"
+    sentiment_neutral: "#95a5a6"
+  
+  # Figure settings
+  figure:
+    dpi: 300
+    figsize: [12, 8]
+  
+  # Word cloud settings
+  wordcloud:
+    max_words: 100
+    background_color: "white"
+    colormap: "viridis"
+
+# Data Warehouse Settings
+warehouse:
+  # Schema name
+  schema_name: "trump_speech_warehouse"
+  
+  # Table naming conventions
+  naming:
+    fact_prefix: "fact_"
+    dim_prefix: "dim_"
+    bridge_prefix: "bridge_"
+  
+  # ETL settings
+  etl:
+    staging_directory: "data/staging"
+    preprocessed_directory: "data/staging/preprocessed"
+    warehouse_directory: "data/warehouse"
+    sql_output_directory: "sql"
+    
+  # Data quality thresholds
+  quality:
+    completeness_threshold: 0.95  # 95% completeness required
+    null_tolerance: 0.10  # 10% null values acceptable
+    referential_integrity_strict: true
+    
+  # Entity normalization
+  entity_normalization:
+    fuzzy_match_threshold: 0.85  # Similarity threshold for fuzzy matching
+    case_sensitive: false
+    preserve_acronyms: true
+    
+  # Date handling
+  date:
+    default_format: "%Y-%m-%d"
+    fiscal_year_start_month: 10  # October (Oct-Sep fiscal year)
+    
+  # Organization classification
+  organization_types:
+    - "INTERNATIONAL_ORG"
+    - "GOVERNMENT_BODY"
+    - "MILITARY"
+    - "CORPORATION"
+    - "OTHER"
+    
+  # Country code mapping (ISO 3166-1 alpha-2)
+  country_codes:
+    "united states": "US"
+    "usa": "US"
+    "america": "US"
+    "china": "CN"
+    "russia": "RU"
+    "russian federation": "RU"
+    "iran": "IR"
+    "north korea": "KP"
+    "south korea": "KR"
+    "united kingdom": "GB"
+    "uk": "GB"
+    "britain": "GB"
+    "france": "FR"
+    "germany": "DE"
+    "italy": "IT"
+    "japan": "JP"
+    "india": "IN"
+    "israel": "IL"
+    "saudi arabia": "SA"
+    "uae": "AE"
+    "qatar": "QA"
+

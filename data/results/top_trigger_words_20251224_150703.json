@@ -1,0 +1,710 @@
+{
+  "metadata": {
+    "model": "Trigger Word Detector (Model 5)",
+    "created": "20251224_150703",
+    "total_words_analyzed": 2186,
+    "min_occurrences": 10
+  },
+  "top_triggers": [
+    {
+      "word": "terrible",
+      "trigger_score": 99.25675675675674,
+      "total_count": 115,
+      "negative_ratio": 0.9752252252252253,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "corrupt",
+      "trigger_score": 95.93251319098174,
+      "total_count": 28,
+      "negative_ratio": 0.94,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "horrible",
+      "trigger_score": 90.14057111637331,
+      "total_count": 88,
+      "negative_ratio": 0.9437751004016064,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "attack",
+      "trigger_score": 89.71557117921321,
+      "total_count": 49,
+      "negative_ratio": 0.9473684210526315,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "weak",
+      "trigger_score": 85.92652051789727,
+      "total_count": 12,
+      "negative_ratio": 0.9,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "crooked",
+      "trigger_score": 84.46375500031601,
+      "total_count": 13,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "suffering",
+      "trigger_score": 84.03400190531984,
+      "total_count": 10,
+      "negative_ratio": 0.7692307692307693,
+      "dominant_emotion": "sadness"
+    },
+    {
+      "word": "terrorists",
+      "trigger_score": 83.74722508410989,
+      "total_count": 22,
+      "negative_ratio": 0.8888888888888888,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "danger",
+      "trigger_score": 83.69246354907317,
+      "total_count": 13,
+      "negative_ratio": 0.6842105263157895,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "fight",
+      "trigger_score": 82.925435049431,
+      "total_count": 95,
+      "negative_ratio": 0.7857142857142857,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "weapons",
+      "trigger_score": 82.04415098084479,
+      "total_count": 77,
+      "negative_ratio": 0.948905109489051,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "nuclear",
+      "trigger_score": 81.72903775464655,
+      "total_count": 158,
+      "negative_ratio": 0.9094076655052264,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "violent",
+      "trigger_score": 81.41063963075592,
+      "total_count": 22,
+      "negative_ratio": 0.9428571428571428,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "kill",
+      "trigger_score": 81.36609730535432,
+      "total_count": 36,
+      "negative_ratio": 0.8688524590163934,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "terrorist",
+      "trigger_score": 81.03932500024561,
+      "total_count": 21,
+      "negative_ratio": 0.9166666666666666,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "shame",
+      "trigger_score": 81.01151744515431,
+      "total_count": 19,
+      "negative_ratio": 0.9142857142857143,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "threat",
+      "trigger_score": 80.79790741639071,
+      "total_count": 37,
+      "negative_ratio": 0.8205128205128205,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "terror",
+      "trigger_score": 80.78603475841476,
+      "total_count": 35,
+      "negative_ratio": 0.8805970149253731,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "ridiculous",
+      "trigger_score": 80.70152887321989,
+      "total_count": 23,
+      "negative_ratio": 0.9444444444444444,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "destroy",
+      "trigger_score": 80.19826529024039,
+      "total_count": 25,
+      "negative_ratio": 0.74,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "death",
+      "trigger_score": 79.76847522511925,
+      "total_count": 75,
+      "negative_ratio": 0.8378378378378378,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "war",
+      "trigger_score": 79.04386746813975,
+      "total_count": 571,
+      "negative_ratio": 0.8913978494623656,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "attacked",
+      "trigger_score": 78.89112493042806,
+      "total_count": 31,
+      "negative_ratio": 0.9056603773584906,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "criminal",
+      "trigger_score": 78.44524200001523,
+      "total_count": 20,
+      "negative_ratio": 0.9310344827586207,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "violence",
+      "trigger_score": 77.93044435742861,
+      "total_count": 45,
+      "negative_ratio": 0.7752808988764045,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "stupid",
+      "trigger_score": 77.86178948369772,
+      "total_count": 47,
+      "negative_ratio": 0.8554216867469879,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "enemy",
+      "trigger_score": 77.7286617815392,
+      "total_count": 14,
+      "negative_ratio": 0.9444444444444444,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "enemies",
+      "trigger_score": 77.56161526676212,
+      "total_count": 22,
+      "negative_ratio": 0.775,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "sorry",
+      "trigger_score": 77.44035573373418,
+      "total_count": 32,
+      "negative_ratio": 0.9736842105263158,
+      "dominant_emotion": "sadness"
+    },
+    {
+      "word": "destroyed",
+      "trigger_score": 77.23206820218451,
+      "total_count": 30,
+      "negative_ratio": 0.8035714285714286,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "worried",
+      "trigger_score": 77.01338876693646,
+      "total_count": 18,
+      "negative_ratio": 0.9090909090909091,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "incompetent",
+      "trigger_score": 76.97078546822874,
+      "total_count": 30,
+      "negative_ratio": 0.9302325581395349,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "crime",
+      "trigger_score": 76.77500997940321,
+      "total_count": 175,
+      "negative_ratio": 0.8413793103448276,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "hatred",
+      "trigger_score": 76.49047573067111,
+      "total_count": 17,
+      "negative_ratio": 0.6764705882352942,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "wow",
+      "trigger_score": 76.16301113761489,
+      "total_count": 15,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "surprise"
+    },
+    {
+      "word": "crazy",
+      "trigger_score": 76.07771152369536,
+      "total_count": 58,
+      "negative_ratio": 0.9701492537313433,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "fake",
+      "trigger_score": 76.07168181740772,
+      "total_count": 61,
+      "negative_ratio": 0.86,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "goals",
+      "trigger_score": 75.93841347289954,
+      "total_count": 12,
+      "negative_ratio": 0.8571428571428571,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "hate",
+      "trigger_score": 75.78122422184933,
+      "total_count": 36,
+      "negative_ratio": 0.819672131147541,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "sick",
+      "trigger_score": 75.62129342979486,
+      "total_count": 23,
+      "negative_ratio": 0.9642857142857143,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "disappointed",
+      "trigger_score": 75.60922250747866,
+      "total_count": 22,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "sadness"
+    },
+    {
+      "word": "nasty",
+      "trigger_score": 75.55539397910023,
+      "total_count": 25,
+      "negative_ratio": 0.9333333333333333,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "dangerous",
+      "trigger_score": 75.48790560080137,
+      "total_count": 53,
+      "negative_ratio": 0.8111111111111111,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "hurt",
+      "trigger_score": 75.43261765273395,
+      "total_count": 25,
+      "negative_ratio": 0.7435897435897436,
+      "dominant_emotion": "sadness"
+    },
+    {
+      "word": "lost",
+      "trigger_score": 75.26923074955884,
+      "total_count": 78,
+      "negative_ratio": 0.8608695652173913,
+      "dominant_emotion": "sadness"
+    },
+    {
+      "word": "criminals",
+      "trigger_score": 75.24644792142789,
+      "total_count": 77,
+      "negative_ratio": 0.7938931297709924,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "worst",
+      "trigger_score": 75.0905997649494,
+      "total_count": 77,
+      "negative_ratio": 0.8,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "disaster",
+      "trigger_score": 74.92640842234617,
+      "total_count": 40,
+      "negative_ratio": 0.85,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "worry",
+      "trigger_score": 74.69667167333616,
+      "total_count": 26,
+      "negative_ratio": 0.8529411764705882,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "fought",
+      "trigger_score": 74.25890008408894,
+      "total_count": 26,
+      "negative_ratio": 0.8048780487804879,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "afraid",
+      "trigger_score": 74.04004928963776,
+      "total_count": 29,
+      "negative_ratio": 0.8372093023255814,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "risk",
+      "trigger_score": 73.701639674249,
+      "total_count": 18,
+      "negative_ratio": 0.8148148148148148,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "pain",
+      "trigger_score": 73.52492534504165,
+      "total_count": 13,
+      "negative_ratio": 0.68,
+      "dominant_emotion": "sadness"
+    },
+    {
+      "word": "sad",
+      "trigger_score": 73.08325138587637,
+      "total_count": 34,
+      "negative_ratio": 0.8444444444444444,
+      "dominant_emotion": "sadness"
+    },
+    {
+      "word": "fraud",
+      "trigger_score": 72.905761450725,
+      "total_count": 22,
+      "negative_ratio": 0.8571428571428571,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "hostile",
+      "trigger_score": 71.94959422958833,
+      "total_count": 11,
+      "negative_ratio": 0.7857142857142857,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "abuse",
+      "trigger_score": 71.12492534504165,
+      "total_count": 10,
+      "negative_ratio": 0.6,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "scam",
+      "trigger_score": 70.77510304588517,
+      "total_count": 13,
+      "negative_ratio": 0.7222222222222222,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "london",
+      "trigger_score": 69.42470782147043,
+      "total_count": 11,
+      "negative_ratio": 0.9333333333333333,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "capacity",
+      "trigger_score": 69.2082523208121,
+      "total_count": 13,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "agenda",
+      "trigger_score": 68.5483930460964,
+      "total_count": 14,
+      "negative_ratio": 0.5555555555555556,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "threats",
+      "trigger_score": 67.1595487928355,
+      "total_count": 11,
+      "negative_ratio": 0.8,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "root",
+      "trigger_score": 66.81215156220676,
+      "total_count": 11,
+      "negative_ratio": 0.7777777777777778,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "include",
+      "trigger_score": 66.44201954536734,
+      "total_count": 11,
+      "negative_ratio": 0.8181818181818182,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "penalty",
+      "trigger_score": 66.24116489840432,
+      "total_count": 17,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "freedom",
+      "trigger_score": 65.68974870974324,
+      "total_count": 25,
+      "negative_ratio": 0.14035087719298245,
+      "dominant_emotion": "trust"
+    },
+    {
+      "word": "plan",
+      "trigger_score": 65.60581165156485,
+      "total_count": 76,
+      "negative_ratio": 0.5,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "win",
+      "trigger_score": 65.1433855883813,
+      "total_count": 101,
+      "negative_ratio": 0.21393034825870647,
+      "dominant_emotion": "joy"
+    },
+    {
+      "word": "catch",
+      "trigger_score": 64.77372896539993,
+      "total_count": 10,
+      "negative_ratio": 0.8,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "next",
+      "trigger_score": 64.39419007517814,
+      "total_count": 131,
+      "negative_ratio": 0.4,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "expect",
+      "trigger_score": 64.25719522980455,
+      "total_count": 36,
+      "negative_ratio": 0.5,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "career",
+      "trigger_score": 63.634770233368165,
+      "total_count": 29,
+      "negative_ratio": 0.7142857142857143,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "faith",
+      "trigger_score": 63.5419051332819,
+      "total_count": 18,
+      "negative_ratio": 0.15384615384615385,
+      "dominant_emotion": "trust"
+    },
+    {
+      "word": "soon",
+      "trigger_score": 62.76972564058109,
+      "total_count": 98,
+      "negative_ratio": 0.3333333333333333,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "going",
+      "trigger_score": 62.639706429958686,
+      "total_count": 2428,
+      "negative_ratio": 0.3705636743215031,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "ultimate",
+      "trigger_score": 62.51420751725661,
+      "total_count": 10,
+      "negative_ratio": 0.6666666666666666,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "will",
+      "trigger_score": 62.24373100347955,
+      "total_count": 885,
+      "negative_ratio": 0.32657657657657657,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "itself",
+      "trigger_score": 62.062595553403916,
+      "total_count": 17,
+      "negative_ratio": 0.8095238095238095,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "wing",
+      "trigger_score": 61.90348968947157,
+      "total_count": 20,
+      "negative_ratio": 0.6666666666666666,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "kinds",
+      "trigger_score": 61.51420751725661,
+      "total_count": 10,
+      "negative_ratio": 0.5,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "future",
+      "trigger_score": 61.462917757991825,
+      "total_count": 85,
+      "negative_ratio": 0.2608695652173913,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "vicious",
+      "trigger_score": 61.10195857121657,
+      "total_count": 14,
+      "negative_ratio": 0.8333333333333334,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "forward",
+      "trigger_score": 60.53982254449143,
+      "total_count": 74,
+      "negative_ratio": 0.24324324324324326,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "incredible",
+      "trigger_score": 60.50194926686289,
+      "total_count": 188,
+      "negative_ratio": 0.0916030534351145,
+      "dominant_emotion": "joy"
+    },
+    {
+      "word": "destruction",
+      "trigger_score": 60.11641519687967,
+      "total_count": 14,
+      "negative_ratio": 0.875,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "hope",
+      "trigger_score": 60.053299744450115,
+      "total_count": 149,
+      "negative_ratio": 0.18032786885245902,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "tomorrow",
+      "trigger_score": 59.9920639516996,
+      "total_count": 25,
+      "negative_ratio": 0.3333333333333333,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "apart",
+      "trigger_score": 59.865560639992715,
+      "total_count": 14,
+      "negative_ratio": 0.875,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "evil",
+      "trigger_score": 59.20626471230544,
+      "total_count": 12,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "row",
+      "trigger_score": 59.16929227264007,
+      "total_count": 11,
+      "negative_ratio": 0.8181818181818182,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "legally",
+      "trigger_score": 59.124925345041646,
+      "total_count": 10,
+      "negative_ratio": 0.3333333333333333,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "powers",
+      "trigger_score": 58.501789056481044,
+      "total_count": 20,
+      "negative_ratio": 0.8461538461538461,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "mail",
+      "trigger_score": 58.39714205737603,
+      "total_count": 15,
+      "negative_ratio": 0.6666666666666666,
+      "dominant_emotion": "anticipation"
+    },
+    {
+      "word": "amazing",
+      "trigger_score": 58.36952372761619,
+      "total_count": 144,
+      "negative_ratio": 0.03783783783783784,
+      "dominant_emotion": "joy"
+    },
+    {
+      "word": "celebrate",
+      "trigger_score": 58.32755225583306,
+      "total_count": 19,
+      "negative_ratio": 0.05128205128205128,
+      "dominant_emotion": "joy"
+    },
+    {
+      "word": "trust",
+      "trigger_score": 58.19873723023167,
+      "total_count": 10,
+      "negative_ratio": 0.1111111111111111,
+      "dominant_emotion": "trust"
+    },
+    {
+      "word": "abc",
+      "trigger_score": 57.82296763290063,
+      "total_count": 11,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "disgust"
+    },
+    {
+      "word": "october",
+      "trigger_score": 57.779811122245725,
+      "total_count": 29,
+      "negative_ratio": 0.8709677419354839,
+      "dominant_emotion": "anger"
+    },
+    {
+      "word": "baltimore",
+      "trigger_score": 57.552293309829835,
+      "total_count": 10,
+      "negative_ratio": 1.0,
+      "dominant_emotion": "fear"
+    },
+    {
+      "word": "disarm",
+      "trigger_score": 57.49056654344397,
+      "total_count": 21,
+      "negative_ratio": 0.3333333333333333,
+      "dominant_emotion": "anticipation"
+    }
+  ]
+}
