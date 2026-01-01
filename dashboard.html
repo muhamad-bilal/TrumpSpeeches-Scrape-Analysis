@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trump Speech Analytics - Predictive Intelligence Dashboard</title>
+
+    <!-- Plotly.js for interactive charts -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            /* Royal Blue & Gold Theme */
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #d4af37;
+            --accent-light: #f0d77d;
+            --secondary: #0ea5e9;
+            --success: #10b981;
+            --warning: #d4af37;
+            --danger: #dc2626;
+            --dark: #0c1929;
+            --darker: #060d16;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --border: #1e3a5f;
+            --card-bg: #0f2744;
+            --gradient-1: linear-gradient(135deg, #1e40af 0%, #d4af37 100%);
+            --gradient-2: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --gradient-3: linear-gradient(135deg, #d4af37 0%, #f0d77d 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --gold-glow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+            border-bottom: 2px solid var(--accent);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: var(--gold-glow);
+        }
+
+        .logo-text h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .header-stat {
+            text-align: center;
+        }
+
+        .header-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .header-stat-label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .model-selector {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--card-bg) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .model-selector h3 {
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .model-btn {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            margin-bottom: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .model-btn:hover {
+            background: rgba(30, 64, 175, 0.3);
+            border-color: var(--primary-light);
+        }
+
+        .model-btn.active {
+            background: var(--gradient-2);
+            border-color: var(--accent);
+            box-shadow: var(--gold-glow);
+        }
+
+        .model-btn i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Input Panel */
+        .input-panel {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--card-bg) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .input-panel h3 {
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--darker);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .input-group input::placeholder {
+            color: var(--gray);
+        }
+
+        .quick-picks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quick-pick {
+            padding: 0.4rem 0.8rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 20px;
+            color: var(--accent);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-pick:hover {
+            background: var(--accent);
+            color: var(--darker);
+            font-weight: 600;
+        }
+
+        .predict-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-1);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1rem;
+            box-shadow: var(--gold-glow);
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, #1e3a8a 0%, #d4af37 100%);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Result Cards */
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--card-bg) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .metric-card.primary {
+            background: var(--gradient-2);
+            border: 2px solid var(--accent);
+            box-shadow: var(--gold-glow);
+        }
+
+        .metric-card.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .metric-card.warning {
+            border-left: 4px solid var(--accent);
+        }
+
+        .metric-card.danger {
+            border-left: 4px solid var(--danger);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-card.primary .metric-label {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Charts Section */
+        .chart-section {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--card-bg) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .chart-subtitle {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Recommendations */
+        .recommendations {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--card-bg) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .recommendations h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+        }
+
+        .recommendation-item {
+            padding: 0.75rem 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--success);
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .recommendation-item.warning {
+            background: rgba(212, 175, 55, 0.1);
+            border-left-color: var(--accent);
+        }
+
+        .recommendation-item.danger {
+            background: rgba(220, 38, 38, 0.1);
+            border-left-color: var(--danger);
+        }
+
+        /* Data Overview Section */
+        .overview-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-3);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Slider */
+        .slider-container {
+            margin-bottom: 1rem;
+        }
+
+        .slider-container label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-container input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .checkbox-item input {
+            accent-color: var(--accent);
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .data-table th {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .tag.positive { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .tag.negative { background: rgba(220, 38, 38, 0.2); color: var(--danger); }
+        .tag.neutral { background: rgba(212, 175, 55, 0.2); color: var(--accent); }
+        .tag.high { background: rgba(220, 38, 38, 0.2); color: var(--danger); }
+        .tag.medium { background: rgba(212, 175, 55, 0.2); color: var(--accent); }
+        .tag.low { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Hidden content */
+        .model-content {
+            display: none;
+        }
+
+        .model-content.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 280px 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .header-stats {
+                display: none;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            background: var(--darker);
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer strong {
+            color: var(--accent-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Trump Speech Analytics</h1>
+                    <span>Predictive Intelligence Dashboard</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-value">43</div>
+                    <div class="header-stat-label">Speeches Analyzed</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">2,872</div>
+                    <div class="header-stat-label">Entities Tracked</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">100+</div>
+                    <div class="header-stat-label">Features Extracted</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">6</div>
+                    <div class="header-stat-label">Prediction Models</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="model-selector">
+                <h3><i class="fas fa-cube"></i> Select Model</h3>
+                <button class="model-btn active" onclick="selectModel('overview')">
+                    <i class="fas fa-chart-line"></i> Data Overview
+                </button>
+                <button class="model-btn" onclick="selectModel('entity')">
+                    <i class="fas fa-user"></i> Entity Reaction Profiler
+                </button>
+                <button class="model-btn" onclick="selectModel('personality')">
+                    <i class="fas fa-users"></i> Personality Compatibility
+                </button>
+                <button class="model-btn" onclick="selectModel('negotiation')">
+                    <i class="fas fa-handshake"></i> Negotiation Predictor
+                </button>
+                <button class="model-btn" onclick="selectModel('response')">
+                    <i class="fas fa-comment-dots"></i> Response Classifier
+                </button>
+                <button class="model-btn" onclick="selectModel('influence')">
+                    <i class="fas fa-lightbulb"></i> Influence Strategy
+                </button>
+                <button class="model-btn" onclick="selectModel('trigger')">
+                    <i class="fas fa-bolt"></i> Trigger Word Detector
+                </button>
+            </div>
+
+            <!-- Dynamic Input Panel -->
+            <div class="input-panel" id="input-panel">
+                <!-- Content will be dynamically updated -->
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <!-- Content will be dynamically updated -->
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Trump Speech Analytics Dashboard | DBA Assignment 2025</p>
+        <p>Data Source: Rev.com Transcripts | NLP Pipeline: spaCy, Transformers, VADER</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // API CONFIGURATION
+        // ============================================
+
+        // Toggle this to use Flask API instead of hardcoded data
+        const USE_API = true;  // Set to true when Flask server is running
+        const API_BASE = 'http://localhost:5000';
+
+        // Check API connection
+        async function checkAPIConnection() {
+            try {
+                const response = await fetch(`${API_BASE}/api/health`);
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+
+        // API call helper
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            const options = {
+                method,
+                headers: { 'Content-Type': 'application/json' }
+            };
+            if (body) options.body = JSON.stringify(body);
+
+            const response = await fetch(`${API_BASE}${endpoint}`, options);
+            return response.json();
+        }
+
+        // ============================================
+        // DATA - Embedded from analysis results
+        // ============================================
+
+        const DATA = {
+            stats: {
+                speeches: 43,
+                entities: 2872,
+                reliableEntities: 535,
+                features: 100
+            },
+
+            // Trump's computed personality profile
+            trumpProfile: {
+                openness: 35,
+                conscientiousness: 72,
+                extraversion: 85,
+                agreeableness: 28,
+                neuroticism: 45
+            },
+
+            // Entity profiles (top entities)
+            entityProfiles: {
+                'china': { sentiment: 'NEUTRAL', volatility: 'LOW', reaction: 'NEUTRAL_MODE', speeches: 28, emotion: 'anticipation' },
+                'biden': { sentiment: 'NEUTRAL', volatility: 'HIGH', reaction: 'UNPREDICTABLE', speeches: 36, emotion: 'anticipation' },
+                'russia': { sentiment: 'NEUTRAL', volatility: 'HIGH', reaction: 'UNPREDICTABLE', speeches: 36, emotion: 'anticipation' },
+                'america': { sentiment: 'NEUTRAL', volatility: 'HIGH', reaction: 'UNPREDICTABLE', speeches: 34, emotion: 'anticipation' },
+                'democrats': { sentiment: 'NEUTRAL', volatility: 'HIGH', reaction: 'UNPREDICTABLE', speeches: 29, emotion: 'anticipation' },
+                'nato': { sentiment: 'NEUTRAL', volatility: 'LOW', reaction: 'NEUTRAL_MODE', speeches: 24, emotion: 'anticipation' },
+                'mexico': { sentiment: 'POSITIVE', volatility: 'LOW', reaction: 'ACHIEVEMENT_MODE', speeches: 9, emotion: 'anticipation' },
+                'putin': { sentiment: 'NEUTRAL', volatility: 'LOW', reaction: 'NEGOTIATION_MODE', speeches: 28, emotion: 'anticipation' },
+                'iran': { sentiment: 'NEUTRAL', volatility: 'LOW', reaction: 'DIPLOMATIC_MODE', speeches: 31, emotion: 'trust' },
+                'europe': { sentiment: 'NEUTRAL', volatility: 'LOW', reaction: 'DIPLOMATIC_MODE', speeches: 28, emotion: 'anticipation' },
+                'msnbc': { sentiment: 'NEGATIVE', volatility: 'HIGH', reaction: 'ATTACK_MODE', speeches: 3, emotion: 'anger' },
+                'cnn': { sentiment: 'NEGATIVE', volatility: 'HIGH', reaction: 'ATTACK_MODE', speeches: 5, emotion: 'disgust' },
+                'military': { sentiment: 'POSITIVE', volatility: 'LOW', reaction: 'CELEBRATION_MODE', speeches: 15, emotion: 'trust' },
+                'trump': { sentiment: 'POSITIVE', volatility: 'HIGH', reaction: 'UNPREDICTABLE', speeches: 39, emotion: 'anticipation' }
+            },
+
+            // Topic favorability for negotiation
+            topicFavorability: {
+                'trade': 75, 'economy': 85, 'immigration': 65, 'foreign_policy': 60,
+                'security': 80, 'healthcare': 45, 'environment': 30, 'taxes': 80,
+                'china': 40, 'russia': 55, 'nato': 50, 'media': 20,
+                'democrats': 15, 'military': 90
+            },
+
+            // Style effectiveness
+            styleEffectiveness: {
+                'flattering': 85, 'transactional': 80, 'assertive': 55,
+                'diplomatic': 50, 'confrontational': 25, 'intellectual': 35,
+                'emotional': 40, 'humble': 60
+            },
+
+            // Linguistic stats
+            linguisticStats: {
+                avgReadability: 75.5,
+                avgSentenceLength: 11.0,
+                avgLexicalDiversity: 0.16,
+                sentimentMean: 0.95
+            },
+
+            // Top trigger words
+            triggerWords: {
+                positive: ['winning', 'beautiful', 'tremendous', 'incredible', 'great', 'amazing', 'success', 'best', 'wonderful', 'fantastic'],
+                negative: ['fake', 'disaster', 'terrible', 'horrible', 'corrupt', 'crooked', 'loser', 'enemy', 'worst', 'nasty']
+            },
+
+            // Influence strategies
+            influenceStrategies: [
+                { principle: 'Liking (Flattery)', effectiveness: 90, tactic: 'Compliment his achievements, show admiration' },
+                { principle: 'Scarcity', effectiveness: 75, tactic: 'Offer exclusive opportunities, "only you can do this"' },
+                { principle: 'Social Proof', effectiveness: 70, tactic: 'Show poll numbers, crowd sizes, popularity' },
+                { principle: 'Reciprocity', effectiveness: 55, tactic: 'Do him a favor first, then ask' },
+                { principle: 'Commitment', effectiveness: 40, tactic: 'Reference his past statements and promises' },
+                { principle: 'Authority', effectiveness: 35, tactic: 'Position HIM as the expert, not outside experts' }
+            ]
+        };
+
+        // ============================================
+        // MODEL FUNCTIONS
+        // ============================================
+
+        async function predictEntityReaction(entity) {
+            // Use API if enabled
+            if (USE_API) {
+                try {
+                    const result = await apiCall('/api/predict/entity', 'POST', { entity });
+                    if (result.status === 'FOUND') {
+                        return {
+                            found: true,
+                            entity: result.entity,
+                            sentiment: result.sentiment.label,
+                            volatility: result.volatility.label,
+                            reaction: result.reaction_type,
+                            speeches: result.speech_count,
+                            emotion: result.dominant_emotion,
+                            emotions: result.emotions
+                        };
+                    }
+                    return { found: false, entity: entity };
+                } catch (e) {
+                    console.error('API Error:', e);
+                    // Fall back to local data
+                }
+            }
+
+            // Local/fallback logic
+            const key = entity.toLowerCase().trim();
+            const profile = DATA.entityProfiles[key];
+
+            if (!profile) {
+                // Search partial match
+                for (const [k, v] of Object.entries(DATA.entityProfiles)) {
+                    if (k.includes(key) || key.includes(k)) {
+                        return { found: true, ...v, entity: k };
+                    }
+                }
+                return { found: false, entity: entity };
+            }
+            return { found: true, ...profile, entity: key };
+        }
+
+        async function predictCompatibility(personality) {
+            // Use API if enabled
+            if (USE_API) {
+                try {
+                    const result = await apiCall('/api/predict/personality', 'POST', personality);
+                    if (result.status === 'SUCCESS') {
+                        return {
+                            score: result.compatibility_score,
+                            responseType: result.response_type,
+                            description: result.description,
+                            factors: result.factors || {
+                                dominance: { score: 0, note: result.description },
+                                agreeableness: { score: 0, note: '' }
+                            }
+                        };
+                    }
+                } catch (e) {
+                    console.error('API Error:', e);
+                    // Fall back to local calculation
+                }
+            }
+
+            // Local/fallback logic
+            const trump = DATA.trumpProfile;
+            const trumpDominance = (trump.extraversion + (100 - trump.agreeableness)) / 2;
+            const otherDominance = (personality.extraversion + (100 - personality.agreeableness)) / 2;
+
+            let score = 0;
+            const factors = {};
+
+            // Dominance dynamic
+            const dominanceDiff = trumpDominance - otherDominance;
+            if (dominanceDiff > 30) {
+                score += 25;
+                factors.dominance = { score: 25, note: 'Deferential - Trump will appreciate respect' };
+            } else if (dominanceDiff > 10) {
+                score += 20;
+                factors.dominance = { score: 20, note: 'Respectful but not pushover' };
+            } else if (dominanceDiff > -10) {
+                score += 10;
+                factors.dominance = { score: 10, note: 'Power struggle likely' };
+            } else {
+                score += 5;
+                factors.dominance = { score: 5, note: 'Will trigger competitive response' };
+            }
+
+            // Agreeableness
+            if (personality.agreeableness > 70) {
+                score += 25;
+                factors.agreeableness = { score: 25, note: 'Accommodating - will avoid conflict' };
+            } else if (personality.agreeableness > 50) {
+                score += 18;
+                factors.agreeableness = { score: 18, note: 'Diplomatic - can manage tensions' };
+            } else if (personality.agreeableness > 30) {
+                score += 10;
+                factors.agreeableness = { score: 10, note: 'Both competitive - friction expected' };
+            } else {
+                score += 5;
+                factors.agreeableness = { score: 5, note: 'Conflict inevitable' };
+            }
+
+            // Other factors
+            score += personality.conscientiousness > 60 ? 20 : personality.conscientiousness > 40 ? 15 : 8;
+            score += personality.neuroticism < 30 ? 15 : personality.neuroticism < 50 ? 12 : 7;
+            score += (personality.extraversion + personality.conscientiousness) / 2 > 60 ? 15 : 10;
+
+            let responseType, description;
+            if (score >= 75) {
+                responseType = 'COOPERATIVE';
+                description = 'Trump will likely be friendly and receptive';
+            } else if (score >= 55) {
+                responseType = 'TRANSACTIONAL';
+                description = 'Trump will engage if there\'s something in it for him';
+            } else if (score >= 40) {
+                responseType = otherDominance > trumpDominance - 10 ? 'COMPETITIVE' : 'DISMISSIVE';
+                description = responseType === 'COMPETITIVE' ? 'Trump will try to assert dominance' : 'Trump may ignore or belittle';
+            } else {
+                responseType = otherDominance > trumpDominance ? 'HOSTILE' : 'CONTEMPTUOUS';
+                description = responseType === 'HOSTILE' ? 'Trump will likely attack' : 'Trump will show disdain';
+            }
+
+            return { score, responseType, description, factors };
+        }
+
+        async function predictNegotiation(topic, style, strategies) {
+            // Use API if enabled
+            if (USE_API) {
+                try {
+                    const result = await apiCall('/api/predict/negotiation', 'POST', {
+                        topic: topic,
+                        style: style,
+                        strategies: strategies
+                    });
+                    if (result.status === 'SUCCESS') {
+                        return {
+                            probability: result.success_probability,
+                            outcome: result.outcome,
+                            topicScore: result.topic_score,
+                            styleScore: result.style_score,
+                            strategies: result.applied_strategies || []
+                        };
+                    }
+                } catch (e) {
+                    console.error('API Error:', e);
+                    // Fall back to local calculation
+                }
+            }
+
+            // Local/fallback logic
+            const topicScore = DATA.topicFavorability[topic] || 50;
+            const styleScore = DATA.styleEffectiveness[style] || 50;
+
+            let baseProb = (topicScore * 0.4 + styleScore * 0.6) / 100;
+
+            const strategyMultipliers = {
+                'show_win': 1.3, 'media_angle': 1.2, 'business_frame': 1.25,
+                'loyalty_appeal': 1.15, 'facts_only': 0.8, 'moral_argument': 0.6
+            };
+
+            const appliedStrategies = [];
+            strategies.forEach(s => {
+                const key = s.toLowerCase().replace(' ', '_');
+                if (strategyMultipliers[key]) {
+                    baseProb *= strategyMultipliers[key];
+                    appliedStrategies.push({ strategy: s, multiplier: strategyMultipliers[key] });
+                }
+            });
+
+            const finalProb = Math.min(0.95, Math.max(0.05, baseProb));
+
+            let outcome;
+            if (finalProb >= 0.75) outcome = 'HIGH SUCCESS LIKELY';
+            else if (finalProb >= 0.55) outcome = 'MODERATE SUCCESS LIKELY';
+            else if (finalProb >= 0.35) outcome = 'UNCERTAIN';
+            else outcome = 'LOW SUCCESS';
+
+            return {
+                probability: Math.round(finalProb * 100),
+                outcome,
+                topicScore,
+                styleScore,
+                strategies: appliedStrategies
+            };
+        }
+
+        async function classifyResponse(sentiment, negRatio, posRatio, powerRatio, certainty) {
+            // Use API if enabled
+            if (USE_API) {
+                try {
+                    const result = await apiCall('/api/predict/response', 'POST', {
+                        sentiment: sentiment,
+                        neg_ratio: negRatio,
+                        pos_ratio: posRatio,
+                        power_ratio: powerRatio,
+                        certainty: certainty
+                    });
+                    if (result.status === 'SUCCESS') {
+                        return {
+                            type: result.response_type,
+                            confidence: result.confidence
+                        };
+                    }
+                } catch (e) {
+                    console.error('API Error:', e);
+                    // Fall back to local calculation
+                }
+            }
+
+            // Local/fallback logic
+            if (negRatio > 0.15 && powerRatio > 0.6) return { type: 'ATTACK', confidence: 85 };
+            if (negRatio > 0.12 && sentiment < 0.3) return { type: 'ATTACK', confidence: 75 };
+            if (posRatio > 0.2 && sentiment > 0.8) return { type: 'PRAISE', confidence: 80 };
+            if (posRatio > 0.15 && powerRatio < 0.4) return { type: 'PRAISE', confidence: 70 };
+            if (powerRatio >= 0.4 && powerRatio <= 0.6 && certainty > 0.3) return { type: 'NEGOTIATE', confidence: 65 };
+            if (sentiment > 0.5 && negRatio < 0.08) return { type: 'NEGOTIATE', confidence: 60 };
+            if (certainty < 0.2 && sentiment > 0.3 && sentiment < 0.7) return { type: 'DEFLECT', confidence: 55 };
+            return { type: 'NEUTRAL', confidence: 50 };
+        }
+
+        async function detectTrigger(words) {
+            // Use API if enabled
+            if (USE_API) {
+                try {
+                    const result = await apiCall('/api/predict/trigger', 'POST', { text: words });
+                    if (result.status === 'FOUND' || result.status === 'NO_TRIGGERS') {
+                        return {
+                            triggerLevel: result.trigger_level || 'LOW',
+                            valence: result.valence || 'NEUTRAL',
+                            score: result.trigger_score || 0,
+                            words: (result.triggers_found || []).map(t => ({
+                                word: t.word,
+                                type: t.type
+                            }))
+                        };
+                    }
+                } catch (e) {
+                    console.error('API Error:', e);
+                    // Fall back to local calculation
+                }
+            }
+
+            // Local/fallback logic
+            const wordList = words.toLowerCase().split(/\s+/);
+            let maxScore = 0;
+            let foundType = 'neutral';
+            const found = [];
+
+            wordList.forEach(word => {
+                if (DATA.triggerWords.positive.includes(word)) {
+                    maxScore = Math.max(maxScore, 70);
+                    foundType = 'positive';
+                    found.push({ word, type: 'positive' });
+                }
+                if (DATA.triggerWords.negative.includes(word)) {
+                    maxScore = Math.max(maxScore, 80);
+                    foundType = 'negative';
+                    found.push({ word, type: 'negative' });
+                }
+            });
+
+            return {
+                triggerLevel: maxScore >= 60 ? 'HIGH' : maxScore >= 40 ? 'MEDIUM' : 'LOW',
+                valence: foundType.toUpperCase(),
+                score: maxScore,
+                words: found
+            };
+        }
+
+        // ============================================
+        // UI RENDERING
+        // ============================================
+
+        let currentModel = 'overview';
+
+        function selectModel(model) {
+            currentModel = model;
+
+            // Update button states
+            document.querySelectorAll('.model-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.model-btn').classList.add('active');
+
+            // Render the appropriate content
+            renderModel(model);
+        }
+
+        function renderModel(model) {
+            const inputPanel = document.getElementById('input-panel');
+            const mainContent = document.getElementById('main-content');
+
+            switch(model) {
+                case 'overview':
+                    renderOverview(inputPanel, mainContent);
+                    break;
+                case 'entity':
+                    renderEntityModel(inputPanel, mainContent);
+                    break;
+                case 'personality':
+                    renderPersonalityModel(inputPanel, mainContent);
+                    break;
+                case 'negotiation':
+                    renderNegotiationModel(inputPanel, mainContent);
+                    break;
+                case 'response':
+                    renderResponseModel(inputPanel, mainContent);
+                    break;
+                case 'influence':
+                    renderInfluenceModel(inputPanel, mainContent);
+                    break;
+                case 'trigger':
+                    renderTriggerModel(inputPanel, mainContent);
+                    break;
+            }
+        }
+
+        function renderOverview(inputPanel, mainContent) {
+            inputPanel.innerHTML = `
+                <h3><i class="fas fa-info-circle"></i> About This Dashboard</h3>
+                <p style="font-size: 0.85rem; color: var(--gray); line-height: 1.7;">
+                    This dashboard provides predictive analytics based on analysis of <strong>43 Trump speeches</strong>
+                    scraped from Rev.com transcripts.
+                </p>
+                <br>
+                <p style="font-size: 0.85rem; color: var(--gray); line-height: 1.7;">
+                    <strong>Pipeline:</strong><br>
+                    Web Scraping → Data Cleaning → NLP Transformation → Feature Engineering → Predictive Modeling
+                </p>
+                <br>
+                <p style="font-size: 0.85rem; color: var(--gray); line-height: 1.7;">
+                    <strong>Technologies:</strong><br>
+                    Python, spaCy, Transformers, VADER Sentiment, scikit-learn, Plotly
+                </p>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="result-grid animate-in">
+                    <div class="metric-card primary">
+                        <div class="metric-icon"><i class="fas fa-microphone"></i></div>
+                        <div class="metric-value">43</div>
+                        <div class="metric-label">Speeches Analyzed</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-users"></i></div>
+                        <div class="metric-value">2,872</div>
+                        <div class="metric-label">Entities Extracted</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="metric-value">535</div>
+                        <div class="metric-label">Reliable Entities (3+ speeches)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-cogs"></i></div>
+                        <div class="metric-value">100+</div>
+                        <div class="metric-label">Features Engineered</div>
+                    </div>
+                </div>
+
+                <div class="overview-section">
+                    <div class="chart-section animate-in">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">Trump's Personality Profile (Big Five)</div>
+                                <div class="chart-subtitle">Derived from linguistic markers in speeches</div>
+                            </div>
+                        </div>
+                        <div id="personality-chart"></div>
+                    </div>
+
+                    <div class="chart-section animate-in">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">Topic Favorability</div>
+                                <div class="chart-subtitle">How positively Trump views different topics</div>
+                            </div>
+                        </div>
+                        <div id="topic-chart"></div>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-in">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Communication Style Effectiveness</div>
+                            <div class="chart-subtitle">How well different approaches work with Trump</div>
+                        </div>
+                    </div>
+                    <div id="style-chart"></div>
+                </div>
+
+                <div class="recommendations animate-in">
+                    <h3><i class="fas fa-brain"></i> Key Insights from Analysis</h3>
+                    <div class="recommendation-item">
+                        <strong>High Extraversion (85/100):</strong> Trump speaks with high energy, uses first-person pronouns frequently, and expresses strong emotions.
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>Low Agreeableness (28/100):</strong> Competitive communication style, frequent use of power language, and adversarial framing.
+                    </div>
+                    <div class="recommendation-item warning">
+                        <strong>Dominant Emotion:</strong> Anticipation appears in 72% of speeches - forward-looking, promise-oriented language.
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>Readability:</strong> Average Flesch-Kincaid grade level of 5.8 - accessible, simple vocabulary.
+                    </div>
+                </div>
+            `;
+
+            // Render charts
+            renderPersonalityChart();
+            renderTopicChart();
+            renderStyleChart();
+        }
+
+        function renderPersonalityChart() {
+            const traits = Object.keys(DATA.trumpProfile);
+            const values = Object.values(DATA.trumpProfile);
+
+            const data = [{
+                type: 'scatterpolar',
+                r: [...values, values[0]],
+                theta: [...traits.map(t => t.charAt(0).toUpperCase() + t.slice(1)), traits[0].charAt(0).toUpperCase() + traits[0].slice(1)],
+                fill: 'toself',
+                fillcolor: 'rgba(212, 175, 55, 0.25)',
+                line: { color: '#d4af37', width: 3 },
+                marker: { size: 8, color: '#d4af37' }
+            }];
+
+            const layout = {
+                polar: {
+                    radialaxis: { visible: true, range: [0, 100], tickfont: { color: '#64748b' } },
+                    angularaxis: { tickfont: { color: '#e2e8f0', size: 11 } },
+                    bgcolor: 'transparent'
+                },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                margin: { t: 30, b: 30, l: 60, r: 60 },
+                height: 300,
+                showlegend: false
+            };
+
+            Plotly.newPlot('personality-chart', data, layout, { responsive: true, displayModeBar: false });
+        }
+
+        function renderTopicChart() {
+            const topics = Object.keys(DATA.topicFavorability);
+            const values = Object.values(DATA.topicFavorability);
+            const colors = values.map(v => v >= 70 ? '#10b981' : v >= 50 ? '#d4af37' : '#dc2626');
+
+            const data = [{
+                type: 'bar',
+                x: values,
+                y: topics,
+                orientation: 'h',
+                marker: { color: colors, borderRadius: 4 }
+            }];
+
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                margin: { t: 10, b: 40, l: 100, r: 20 },
+                height: 300,
+                xaxis: { title: 'Favorability %', color: '#64748b', gridcolor: 'rgba(255,255,255,0.05)' },
+                yaxis: { color: '#e2e8f0', tickfont: { size: 10 } },
+                font: { family: 'Inter' }
+            };
+
+            Plotly.newPlot('topic-chart', data, layout, { responsive: true, displayModeBar: false });
+        }
+
+        function renderStyleChart() {
+            const styles = Object.keys(DATA.styleEffectiveness);
+            const values = Object.values(DATA.styleEffectiveness);
+            const colors = values.map(v => v >= 70 ? '#10b981' : v >= 50 ? '#d4af37' : '#dc2626');
+
+            const data = [{
+                type: 'bar',
+                x: styles.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                y: values,
+                marker: {
+                    color: colors,
+                    line: { color: 'rgba(255,255,255,0.1)', width: 1 }
+                }
+            }];
+
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                margin: { t: 20, b: 60, l: 50, r: 20 },
+                height: 250,
+                xaxis: { color: '#e2e8f0', tickangle: -30 },
+                yaxis: { title: 'Effectiveness %', color: '#64748b', gridcolor: 'rgba(255,255,255,0.05)' },
+                font: { family: 'Inter' }
+            };
+
+            Plotly.newPlot('style-chart', data, layout, { responsive: true, displayModeBar: false });
+        }
+
+        function renderEntityModel(inputPanel, mainContent) {
+            inputPanel.innerHTML = `
+                <h3><i class="fas fa-user"></i> Entity Input</h3>
+                <div class="input-group">
+                    <label>Enter Entity Name</label>
+                    <input type="text" id="entity-input" placeholder="e.g., China, Biden, NATO...">
+                </div>
+                <div class="input-group">
+                    <label>Quick Picks</label>
+                    <div class="quick-picks">
+                        <span class="quick-pick" onclick="setEntity('China')">China</span>
+                        <span class="quick-pick" onclick="setEntity('Biden')">Biden</span>
+                        <span class="quick-pick" onclick="setEntity('Russia')">Russia</span>
+                        <span class="quick-pick" onclick="setEntity('NATO')">NATO</span>
+                        <span class="quick-pick" onclick="setEntity('Democrats')">Democrats</span>
+                        <span class="quick-pick" onclick="setEntity('Military')">Military</span>
+                        <span class="quick-pick" onclick="setEntity('CNN')">CNN</span>
+                        <span class="quick-pick" onclick="setEntity('Mexico')">Mexico</span>
+                    </div>
+                </div>
+                <button class="predict-btn" onclick="runEntityPrediction()">
+                    <i class="fas fa-search"></i> Analyze Entity
+                </button>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="chart-section animate-in" style="margin-bottom: 1.5rem;">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title"><i class="fas fa-info-circle" style="color: var(--accent);"></i> Model Purpose</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; font-size: 0.9rem; line-height: 1.7; color: var(--gray);">
+                        <p><strong style="color: var(--light);">What it does:</strong> Predicts how Trump will emotionally react when discussing any person, organization, or country based on historical speech patterns.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">How it works:</strong> Using NLP (spaCy NER), we extracted <strong>2,872 entities</strong> from 43 speeches. For each entity, we computed average sentiment (VADER), emotional volatility (standard deviation), and dominant emotion (NRCLex) across all mentions.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">Use case:</strong> Journalists, diplomats, or analysts can predict Trump's likely tone before he discusses a topic.</p>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-in">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Entity Reaction Profiler</div>
+                            <div class="chart-subtitle">Predict Trump's emotional reaction to any entity</div>
+                        </div>
+                    </div>
+                    <div id="entity-results" style="padding: 2rem; text-align: center; color: var(--gray);">
+                        <i class="fas fa-arrow-left" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Enter an entity name and click "Analyze Entity" to see predictions</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setEntity(entity) {
+            document.getElementById('entity-input').value = entity;
+            runEntityPrediction();
+        }
+
+        async function runEntityPrediction() {
+            const entity = document.getElementById('entity-input').value;
+            if (!entity) return;
+
+            const resultsDiv = document.getElementById('entity-results');
+            resultsDiv.innerHTML = '<div style="padding: 2rem; text-align: center;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><p>Analyzing...</p></div>';
+
+            const result = await predictEntityReaction(entity);
+
+            if (!result.found) {
+                resultsDiv.innerHTML = `
+                    <div style="padding: 2rem; text-align: center;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
+                        <h3>Entity Not Found</h3>
+                        <p style="color: var(--gray);">No data found for "${entity}". Try a different entity or check spelling.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sentimentClass = result.sentiment === 'POSITIVE' ? 'success' : result.sentiment === 'NEGATIVE' ? 'danger' : 'warning';
+            const volatilityClass = result.volatility === 'HIGH' ? 'danger' : result.volatility === 'LOW' ? 'success' : 'warning';
+
+            resultsDiv.innerHTML = `
+                <div class="result-grid" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card primary">
+                        <div class="metric-icon"><i class="fas fa-theater-masks"></i></div>
+                        <div class="metric-value" style="font-size: 1.3rem;">${result.reaction}</div>
+                        <div class="metric-label">Reaction Type</div>
+                    </div>
+                    <div class="metric-card ${sentimentClass}">
+                        <div class="metric-icon"><i class="fas fa-heart"></i></div>
+                        <div class="metric-value">${result.sentiment}</div>
+                        <div class="metric-label">Sentiment</div>
+                    </div>
+                    <div class="metric-card ${volatilityClass}">
+                        <div class="metric-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="metric-value">${result.volatility}</div>
+                        <div class="metric-label">Volatility</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-microphone"></i></div>
+                        <div class="metric-value">${result.speeches}</div>
+                        <div class="metric-label">Speeches Mentioned</div>
+                    </div>
+                </div>
+
+                <div class="recommendations" style="background: transparent; padding: 0;">
+                    <h3><i class="fas fa-lightbulb"></i> Interpretation</h3>
+                    <div class="recommendation-item ${sentimentClass === 'danger' ? 'danger' : sentimentClass === 'success' ? '' : 'warning'}">
+                        <strong>Entity:</strong> ${result.entity.charAt(0).toUpperCase() + result.entity.slice(1)} |
+                        <strong>Dominant Emotion:</strong> ${result.emotion.charAt(0).toUpperCase() + result.emotion.slice(1)}
+                    </div>
+                    ${getEntityRecommendations(result)}
+                </div>
+            `;
+        }
+
+        function getEntityRecommendations(result) {
+            const recs = [];
+            if (result.sentiment === 'NEGATIVE') {
+                recs.push('<div class="recommendation-item danger">Trump tends to react NEGATIVELY to this entity. Expect critical or hostile language.</div>');
+            } else if (result.sentiment === 'POSITIVE') {
+                recs.push('<div class="recommendation-item">Trump tends to react POSITIVELY to this entity. Expect praise or celebration.</div>');
+            } else {
+                recs.push('<div class="recommendation-item warning">Trump has MIXED reactions. Context-dependent responses expected.</div>');
+            }
+            if (result.volatility === 'HIGH') {
+                recs.push('<div class="recommendation-item warning">HIGH volatility - reactions are UNPREDICTABLE and may vary significantly.</div>');
+            }
+            return recs.join('');
+        }
+
+        function renderPersonalityModel(inputPanel, mainContent) {
+            inputPanel.innerHTML = `
+                <h3><i class="fas fa-users"></i> Personality Input</h3>
+                <p style="font-size: 0.8rem; color: var(--gray); margin-bottom: 1rem;">Enter Big Five traits (0-100)</p>
+
+                <div class="slider-container">
+                    <label><span>Openness</span><span id="openness-val">50</span></label>
+                    <input type="range" id="openness" min="0" max="100" value="50" oninput="updateSlider('openness')">
+                </div>
+                <div class="slider-container">
+                    <label><span>Conscientiousness</span><span id="conscientiousness-val">50</span></label>
+                    <input type="range" id="conscientiousness" min="0" max="100" value="50" oninput="updateSlider('conscientiousness')">
+                </div>
+                <div class="slider-container">
+                    <label><span>Extraversion</span><span id="extraversion-val">50</span></label>
+                    <input type="range" id="extraversion" min="0" max="100" value="50" oninput="updateSlider('extraversion')">
+                </div>
+                <div class="slider-container">
+                    <label><span>Agreeableness</span><span id="agreeableness-val">50</span></label>
+                    <input type="range" id="agreeableness" min="0" max="100" value="50" oninput="updateSlider('agreeableness')">
+                </div>
+                <div class="slider-container">
+                    <label><span>Neuroticism</span><span id="neuroticism-val">50</span></label>
+                    <input type="range" id="neuroticism" min="0" max="100" value="50" oninput="updateSlider('neuroticism')">
+                </div>
+
+                <div class="input-group">
+                    <label>Quick Presets</label>
+                    <div class="quick-picks">
+                        <span class="quick-pick" onclick="setPersonalityPreset('alpha')">Alpha Leader</span>
+                        <span class="quick-pick" onclick="setPersonalityPreset('diplomat')">Diplomat</span>
+                        <span class="quick-pick" onclick="setPersonalityPreset('yesman')">Yes-Man</span>
+                    </div>
+                </div>
+
+                <button class="predict-btn" onclick="runPersonalityPrediction()">
+                    <i class="fas fa-user-check"></i> Check Compatibility
+                </button>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="chart-section animate-in" style="margin-bottom: 1.5rem;">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title"><i class="fas fa-info-circle" style="color: var(--accent);"></i> Model Purpose</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; font-size: 0.9rem; line-height: 1.7; color: var(--gray);">
+                        <p><strong style="color: var(--light);">What it does:</strong> Predicts how compatible a person's personality is with Trump's communication style, forecasting whether interactions will be cooperative, competitive, or hostile.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">How it works:</strong> We derived Trump's Big Five personality profile from linguistic markers in his speeches (pronoun usage, certainty language, emotional expression). The model compares your traits against his, weighing factors like dominance dynamics and agreeableness.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">Use case:</strong> Advisors, negotiators, or staff can understand how their personality type might affect interactions with Trump.</p>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-in">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Personality Compatibility Predictor</div>
+                            <div class="chart-subtitle">Predict how Trump will respond to different personality types</div>
+                        </div>
+                    </div>
+                    <div id="personality-results" style="padding: 2rem; text-align: center; color: var(--gray);">
+                        <i class="fas fa-arrow-left" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Adjust personality sliders and click "Check Compatibility"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateSlider(id) {
+            const value = document.getElementById(id).value;
+            document.getElementById(id + '-val').textContent = value;
+        }
+
+        function setPersonalityPreset(preset) {
+            const presets = {
+                'alpha': { openness: 50, conscientiousness: 70, extraversion: 90, agreeableness: 20, neuroticism: 30 },
+                'diplomat': { openness: 65, conscientiousness: 80, extraversion: 55, agreeableness: 70, neuroticism: 25 },
+                'yesman': { openness: 40, conscientiousness: 50, extraversion: 30, agreeableness: 85, neuroticism: 50 }
+            };
+            const p = presets[preset];
+            Object.keys(p).forEach(key => {
+                document.getElementById(key).value = p[key];
+                document.getElementById(key + '-val').textContent = p[key];
+            });
+            runPersonalityPrediction();
+        }
+
+        async function runPersonalityPrediction() {
+            const personality = {
+                openness: parseInt(document.getElementById('openness').value),
+                conscientiousness: parseInt(document.getElementById('conscientiousness').value),
+                extraversion: parseInt(document.getElementById('extraversion').value),
+                agreeableness: parseInt(document.getElementById('agreeableness').value),
+                neuroticism: parseInt(document.getElementById('neuroticism').value)
+            };
+
+            const resultsDiv = document.getElementById('personality-results');
+            resultsDiv.innerHTML = '<div style="padding: 2rem; text-align: center;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><p>Analyzing...</p></div>';
+
+            const result = await predictCompatibility(personality);
+
+            const scoreClass = result.score >= 75 ? 'success' : result.score >= 55 ? 'warning' : 'danger';
+
+            resultsDiv.innerHTML = `
+                <div class="result-grid" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card primary">
+                        <div class="metric-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="metric-value">${result.score}</div>
+                        <div class="metric-label">Compatibility Score</div>
+                    </div>
+                    <div class="metric-card ${scoreClass}">
+                        <div class="metric-icon"><i class="fas fa-user-tag"></i></div>
+                        <div class="metric-value" style="font-size: 1.2rem;">${result.responseType}</div>
+                        <div class="metric-label">Predicted Response</div>
+                    </div>
+                </div>
+
+                <div id="comparison-chart" style="margin-bottom: 1.5rem;"></div>
+
+                <div class="recommendations" style="background: transparent; padding: 0;">
+                    <h3><i class="fas fa-info-circle"></i> Analysis</h3>
+                    <div class="recommendation-item ${scoreClass === 'danger' ? 'danger' : scoreClass === 'success' ? '' : 'warning'}">
+                        ${result.description}
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>Dominance:</strong> ${result.factors.dominance.note} (${result.factors.dominance.score} pts)
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>Agreeableness:</strong> ${result.factors.agreeableness.note} (${result.factors.agreeableness.score} pts)
+                    </div>
+                </div>
+            `;
+
+            // Render comparison chart
+            const traits = ['Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Neuroticism'];
+            const yourValues = [personality.openness, personality.conscientiousness, personality.extraversion, personality.agreeableness, personality.neuroticism];
+            const trumpValues = [DATA.trumpProfile.openness, DATA.trumpProfile.conscientiousness, DATA.trumpProfile.extraversion, DATA.trumpProfile.agreeableness, DATA.trumpProfile.neuroticism];
+
+            const data = [
+                { type: 'scatterpolar', r: [...trumpValues, trumpValues[0]], theta: [...traits, traits[0]], fill: 'toself', name: 'Trump', fillcolor: 'rgba(212, 175, 55, 0.3)', line: { color: '#d4af37', width: 2 } },
+                { type: 'scatterpolar', r: [...yourValues, yourValues[0]], theta: [...traits, traits[0]], fill: 'toself', name: 'You', fillcolor: 'rgba(30, 64, 175, 0.3)', line: { color: '#3b82f6', width: 2 } }
+            ];
+
+            const layout = {
+                polar: { radialaxis: { visible: true, range: [0, 100] }, bgcolor: 'transparent' },
+                paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
+                margin: { t: 40, b: 40, l: 60, r: 60 }, height: 300,
+                legend: { font: { color: '#e2e8f0' }, x: 0.5, y: -0.1, xanchor: 'center', orientation: 'h' },
+                font: { color: '#e2e8f0' }
+            };
+
+            Plotly.newPlot('comparison-chart', data, layout, { responsive: true, displayModeBar: false });
+        }
+
+        function renderNegotiationModel(inputPanel, mainContent) {
+            inputPanel.innerHTML = `
+                <h3><i class="fas fa-handshake"></i> Negotiation Setup</h3>
+
+                <div class="input-group">
+                    <label>Topic</label>
+                    <select id="neg-topic">
+                        <option value="trade">Trade</option>
+                        <option value="economy">Economy</option>
+                        <option value="military">Military</option>
+                        <option value="security">Security</option>
+                        <option value="immigration">Immigration</option>
+                        <option value="foreign_policy">Foreign Policy</option>
+                        <option value="china">China</option>
+                        <option value="russia">Russia</option>
+                        <option value="nato">NATO</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="environment">Environment</option>
+                        <option value="media">Media</option>
+                        <option value="democrats">Democrats</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Communication Style</label>
+                    <select id="neg-style">
+                        <option value="flattering">Flattering</option>
+                        <option value="transactional">Transactional</option>
+                        <option value="humble">Humble</option>
+                        <option value="assertive">Assertive</option>
+                        <option value="diplomatic">Diplomatic</option>
+                        <option value="emotional">Emotional</option>
+                        <option value="intellectual">Intellectual</option>
+                        <option value="confrontational">Confrontational</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Strategies (select multiple)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" value="show_win" class="neg-strategy"> Show Win</label>
+                        <label class="checkbox-item"><input type="checkbox" value="media_angle" class="neg-strategy"> Media Angle</label>
+                        <label class="checkbox-item"><input type="checkbox" value="business_frame" class="neg-strategy"> Business Frame</label>
+                        <label class="checkbox-item"><input type="checkbox" value="loyalty_appeal" class="neg-strategy"> Loyalty Appeal</label>
+                        <label class="checkbox-item"><input type="checkbox" value="facts_only" class="neg-strategy"> Facts Only</label>
+                        <label class="checkbox-item"><input type="checkbox" value="moral_argument" class="neg-strategy"> Moral Argument</label>
+                    </div>
+                </div>
+
+                <button class="predict-btn" onclick="runNegotiationPrediction()">
+                    <i class="fas fa-calculator"></i> Predict Success
+                </button>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="chart-section animate-in" style="margin-bottom: 1.5rem;">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title"><i class="fas fa-info-circle" style="color: var(--accent);"></i> Model Purpose</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; font-size: 0.9rem; line-height: 1.7; color: var(--gray);">
+                        <p><strong style="color: var(--light);">What it does:</strong> Predicts the probability of successful negotiation with Trump based on topic, communication style, and strategic approach.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">How it works:</strong> Analyzed Trump's speech patterns to compute topic favorability scores (how positively he views each topic) and style effectiveness ratings. The model combines these with strategy multipliers derived from successful vs. failed negotiation patterns in his rhetoric.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">Use case:</strong> Business leaders, diplomats, or lobbyists preparing for negotiations can optimize their approach strategy.</p>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-in">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Negotiation Success Predictor</div>
+                            <div class="chart-subtitle">Predict likelihood of successful negotiation with Trump</div>
+                        </div>
+                    </div>
+                    <div id="negotiation-results" style="padding: 2rem; text-align: center; color: var(--gray);">
+                        <i class="fas fa-arrow-left" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Configure negotiation parameters and click "Predict Success"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function runNegotiationPrediction() {
+            const topic = document.getElementById('neg-topic').value;
+            const style = document.getElementById('neg-style').value;
+            const strategies = Array.from(document.querySelectorAll('.neg-strategy:checked')).map(cb => cb.value);
+
+            const resultsDiv = document.getElementById('negotiation-results');
+            resultsDiv.innerHTML = '<div style="padding: 2rem; text-align: center;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><p>Calculating...</p></div>';
+
+            const result = await predictNegotiation(topic, style, strategies);
+
+            const probClass = result.probability >= 75 ? 'success' : result.probability >= 55 ? 'warning' : 'danger';
+
+            resultsDiv.innerHTML = `
+                <div class="result-grid" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card primary">
+                        <div class="metric-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="metric-value">${result.probability}%</div>
+                        <div class="metric-label">Success Probability</div>
+                    </div>
+                    <div class="metric-card ${probClass}">
+                        <div class="metric-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <div class="metric-value" style="font-size: 1rem;">${result.outcome}</div>
+                        <div class="metric-label">Predicted Outcome</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-book"></i></div>
+                        <div class="metric-value">${result.topicScore}%</div>
+                        <div class="metric-label">Topic Favorability</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-comment"></i></div>
+                        <div class="metric-value">${result.styleScore}%</div>
+                        <div class="metric-label">Style Effectiveness</div>
+                    </div>
+                </div>
+
+                <div id="neg-gauge-chart" style="margin-bottom: 1rem;"></div>
+
+                ${result.strategies.length > 0 ? `
+                <div class="recommendations" style="background: transparent; padding: 0;">
+                    <h3><i class="fas fa-chess"></i> Applied Strategies</h3>
+                    ${result.strategies.map(s => `
+                        <div class="recommendation-item ${s.multiplier >= 1 ? '' : 'danger'}">
+                            <strong>${s.strategy.replace('_', ' ').toUpperCase()}:</strong> ${s.multiplier}x ${s.multiplier >= 1 ? 'BOOST' : 'PENALTY'}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                <div class="recommendations" style="background: transparent; padding: 0; margin-top: 1rem;">
+                    <h3><i class="fas fa-lightbulb"></i> Strategic Recommendations</h3>
+                    <div class="recommendation-item">Always frame proposals as Trump 'winning'</div>
+                    <div class="recommendation-item">Highlight business/economic benefits</div>
+                    <div class="recommendation-item warning">Avoid moral arguments - use business logic instead</div>
+                </div>
+            `;
+
+            // Gauge chart
+            const gaugeData = [{
+                type: 'indicator',
+                mode: 'gauge+number',
+                value: result.probability,
+                gauge: {
+                    axis: { range: [0, 100], tickcolor: '#94a3b8' },
+                    bar: { color: result.probability >= 75 ? '#10b981' : result.probability >= 55 ? '#d4af37' : '#dc2626' },
+                    bgcolor: 'rgba(255,255,255,0.05)',
+                    borderwidth: 0,
+                    steps: [
+                        { range: [0, 35], color: 'rgba(220, 38, 38, 0.2)' },
+                        { range: [35, 55], color: 'rgba(212, 175, 55, 0.2)' },
+                        { range: [55, 75], color: 'rgba(212, 175, 55, 0.2)' },
+                        { range: [75, 100], color: 'rgba(16, 185, 129, 0.2)' }
+                    ]
+                },
+                number: { suffix: '%', font: { color: '#d4af37', size: 40 } }
+            }];
+
+            const gaugeLayout = {
+                paper_bgcolor: 'transparent',
+                margin: { t: 30, b: 0, l: 30, r: 30 },
+                height: 200,
+                font: { color: '#e2e8f0' }
+            };
+
+            Plotly.newPlot('neg-gauge-chart', gaugeData, gaugeLayout, { responsive: true, displayModeBar: false });
+        }
+
+        function renderResponseModel(inputPanel, mainContent) {
+            inputPanel.innerHTML = `
+                <h3><i class="fas fa-comment-dots"></i> Linguistic Features</h3>
+
+                <div class="slider-container">
+                    <label><span>Overall Sentiment</span><span id="resp-sentiment-val">0.5</span></label>
+                    <input type="range" id="resp-sentiment" min="-100" max="100" value="50" oninput="updateRespSlider('resp-sentiment', true)">
+                </div>
+                <div class="slider-container">
+                    <label><span>Negative Ratio</span><span id="resp-neg-val">0.10</span></label>
+                    <input type="range" id="resp-neg" min="0" max="100" value="10" oninput="updateRespSlider('resp-neg')">
+                </div>
+                <div class="slider-container">
+                    <label><span>Positive Ratio</span><span id="resp-pos-val">0.15</span></label>
+                    <input type="range" id="resp-pos" min="0" max="100" value="15" oninput="updateRespSlider('resp-pos')">
+                </div>
+                <div class="slider-container">
+                    <label><span>Power/Affiliation Ratio</span><span id="resp-power-val">0.50</span></label>
+                    <input type="range" id="resp-power" min="0" max="100" value="50" oninput="updateRespSlider('resp-power')">
+                </div>
+                <div class="slider-container">
+                    <label><span>Certainty Level</span><span id="resp-cert-val">0.30</span></label>
+                    <input type="range" id="resp-cert" min="0" max="100" value="30" oninput="updateRespSlider('resp-cert')">
+                </div>
+
+                <button class="predict-btn" onclick="runResponsePrediction()">
+                    <i class="fas fa-robot"></i> Classify Response
+                </button>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="chart-section animate-in" style="margin-bottom: 1.5rem;">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title"><i class="fas fa-info-circle" style="color: var(--accent);"></i> Model Purpose</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; font-size: 0.9rem; line-height: 1.7; color: var(--gray);">
+                        <p><strong style="color: var(--light);">What it does:</strong> Classifies Trump's likely response type (Attack, Praise, Negotiate, Deflect, Neutral) based on the linguistic features of incoming stimuli.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">How it works:</strong> Using decision tree logic trained on labeled speech segments, the model uses 5 key features: sentiment score, negative/positive word ratios, power language ratio, and certainty level. These were extracted using VADER sentiment and LIWC-style linguistic analysis.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">Use case:</strong> Communications teams can predict how Trump might respond to news stories, statements, or questions based on their linguistic characteristics.</p>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-in">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Response Classifier (ML-based)</div>
+                            <div class="chart-subtitle">Classify Trump's response type based on linguistic features</div>
+                        </div>
+                    </div>
+                    <div id="response-results" style="padding: 2rem; text-align: center; color: var(--gray);">
+                        <i class="fas fa-arrow-left" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Adjust linguistic features and click "Classify Response"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateRespSlider(id, isSentiment = false) {
+            const value = document.getElementById(id).value;
+            if (isSentiment) {
+                document.getElementById(id + '-val').textContent = (value / 100).toFixed(2);
+            } else {
+                document.getElementById(id + '-val').textContent = (value / 100).toFixed(2);
+            }
+        }
+
+        async function runResponsePrediction() {
+            const sentiment = document.getElementById('resp-sentiment').value / 100;
+            const negRatio = document.getElementById('resp-neg').value / 100;
+            const posRatio = document.getElementById('resp-pos').value / 100;
+            const powerRatio = document.getElementById('resp-power').value / 100;
+            const certainty = document.getElementById('resp-cert').value / 100;
+
+            const resultsDiv = document.getElementById('response-results');
+            resultsDiv.innerHTML = '<div style="padding: 2rem; text-align: center;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><p>Classifying...</p></div>';
+
+            const result = await classifyResponse(sentiment, negRatio, posRatio, powerRatio, certainty);
+
+            const typeColors = {
+                'ATTACK': 'danger',
+                'PRAISE': 'success',
+                'NEGOTIATE': 'warning',
+                'DEFLECT': 'warning',
+                'NEUTRAL': ''
+            };
+
+            resultsDiv.innerHTML = `
+                <div class="result-grid" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card primary">
+                        <div class="metric-icon"><i class="fas fa-comment-alt"></i></div>
+                        <div class="metric-value">${result.type}</div>
+                        <div class="metric-label">Predicted Response</div>
+                    </div>
+                    <div class="metric-card ${typeColors[result.type] || ''}">
+                        <div class="metric-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="metric-value">${result.confidence}%</div>
+                        <div class="metric-label">Confidence</div>
+                    </div>
+                </div>
+
+                <div class="recommendations" style="background: transparent; padding: 0;">
+                    <h3><i class="fas fa-info-circle"></i> Response Type Interpretation</h3>
+                    ${getResponseInterpretation(result.type)}
+                </div>
+            `;
+        }
+
+        function getResponseInterpretation(type) {
+            const interpretations = {
+                'ATTACK': '<div class="recommendation-item danger">Trump is likely to respond aggressively - expect criticism, personal attacks, or combative language.</div>',
+                'PRAISE': '<div class="recommendation-item">Trump is likely to respond positively - expect compliments, celebration, or supportive language.</div>',
+                'NEGOTIATE': '<div class="recommendation-item warning">Trump is likely to engage in negotiation - expect deal-making language and conditional offers.</div>',
+                'DEFLECT': '<div class="recommendation-item warning">Trump is likely to deflect - expect topic changes, blame shifting, or non-answers.</div>',
+                'NEUTRAL': '<div class="recommendation-item">Trump\'s response is likely to be measured and neutral - no strong emotional reaction expected.</div>'
+            };
+            return interpretations[type] || '';
+        }
+
+        function renderInfluenceModel(inputPanel, mainContent) {
+            inputPanel.innerHTML = `
+                <h3><i class="fas fa-lightbulb"></i> Influence Context</h3>
+
+                <div class="input-group">
+                    <label>Context</label>
+                    <select id="inf-context">
+                        <option value="business">Business</option>
+                        <option value="political">Political</option>
+                        <option value="personal">Personal</option>
+                        <option value="media">Media</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Your Goal</label>
+                    <select id="inf-goal">
+                        <option value="agreement">Get Agreement</option>
+                        <option value="favor">Ask a Favor</option>
+                        <option value="information">Get Information</option>
+                        <option value="relationship">Build Relationship</option>
+                    </select>
+                </div>
+
+                <button class="predict-btn" onclick="runInfluencePrediction()">
+                    <i class="fas fa-magic"></i> Get Strategies
+                </button>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="chart-section animate-in" style="margin-bottom: 1.5rem;">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title"><i class="fas fa-info-circle" style="color: var(--accent);"></i> Model Purpose</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; font-size: 0.9rem; line-height: 1.7; color: var(--gray);">
+                        <p><strong style="color: var(--light);">What it does:</strong> Ranks psychological influence strategies by effectiveness for persuading Trump, based on Cialdini's 6 principles of persuasion.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">How it works:</strong> Analyzed Trump's speech patterns to determine which persuasion principles he responds to. Flattery (Liking) scores highest at 90%, while Authority scores lowest at 35% (he rejects external experts). Context and goal modifiers adjust these base scores.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">Use case:</strong> Anyone seeking to persuade Trump can identify which psychological levers are most effective in their specific context.</p>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-in">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Psychological Influence Model</div>
+                            <div class="chart-subtitle">Based on Cialdini's principles of persuasion</div>
+                        </div>
+                    </div>
+                    <div id="influence-results" style="padding: 2rem; text-align: center; color: var(--gray);">
+                        <i class="fas fa-arrow-left" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Select context and goal, then click "Get Strategies"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function runInfluencePrediction() {
+            const context = document.getElementById('inf-context').value;
+            const goal = document.getElementById('inf-goal').value;
+            const resultsDiv = document.getElementById('influence-results');
+
+            let strategies;
+
+            // Use API if enabled
+            if (USE_API) {
+                try {
+                    const result = await apiCall('/api/predict/influence', 'POST', {
+                        context: context,
+                        goal: goal
+                    });
+                    if (result.status === 'SUCCESS') {
+                        strategies = result.strategies.map(s => ({
+                            principle: s.principle,
+                            effectiveness: s.effectiveness,
+                            tactic: s.tactic
+                        }));
+                    }
+                } catch (e) {
+                    console.error('API Error:', e);
+                    strategies = null;
+                }
+            }
+
+            // Local/fallback logic
+            if (!strategies) {
+                const contextMods = {
+                    'business': { 'Scarcity': 1.2, 'Reciprocity': 1.1 },
+                    'political': { 'Social Proof': 1.3, 'Liking (Flattery)': 1.1 },
+                    'personal': { 'Liking (Flattery)': 1.3, 'Reciprocity': 1.2 },
+                    'media': { 'Social Proof': 1.3, 'Scarcity': 1.1 }
+                };
+
+                strategies = DATA.influenceStrategies.map(s => {
+                    let eff = s.effectiveness;
+                    if (contextMods[context] && contextMods[context][s.principle]) {
+                        eff *= contextMods[context][s.principle];
+                    }
+                    return { ...s, effectiveness: Math.min(100, Math.round(eff)) };
+                }).sort((a, b) => b.effectiveness - a.effectiveness);
+            }
+
+            resultsDiv.innerHTML = `
+                <div id="influence-chart" style="margin-bottom: 1.5rem;"></div>
+
+                <div class="recommendations" style="background: transparent; padding: 0;">
+                    <h3><i class="fas fa-list-ol"></i> Ranked Influence Strategies</h3>
+                    ${strategies.map((s, i) => `
+                        <div class="recommendation-item ${i === 0 ? '' : i < 3 ? 'warning' : 'danger'}" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>#${i+1} ${s.principle}</strong><br>
+                                <span style="font-size: 0.85rem; color: var(--gray);">${s.tactic}</span>
+                            </div>
+                            <span class="tag ${s.effectiveness >= 70 ? 'positive' : s.effectiveness >= 50 ? 'neutral' : 'negative'}">${s.effectiveness}%</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Bar chart
+            const data = [{
+                type: 'bar',
+                x: strategies.map(s => s.effectiveness),
+                y: strategies.map(s => s.principle),
+                orientation: 'h',
+                marker: {
+                    color: strategies.map(s => s.effectiveness >= 70 ? '#10b981' : s.effectiveness >= 50 ? '#d4af37' : '#dc2626')
+                }
+            }];
+
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                margin: { t: 10, b: 40, l: 120, r: 20 },
+                height: 250,
+                xaxis: { title: 'Effectiveness %', color: '#64748b', gridcolor: 'rgba(255,255,255,0.05)' },
+                yaxis: { color: '#e2e8f0' },
+                font: { family: 'Inter' }
+            };
+
+            Plotly.newPlot('influence-chart', data, layout, { responsive: true, displayModeBar: false });
+        }
+
+        function renderTriggerModel(inputPanel, mainContent) {
+            inputPanel.innerHTML = `
+                <h3><i class="fas fa-bolt"></i> Trigger Detection</h3>
+
+                <div class="input-group">
+                    <label>Enter Word or Phrase</label>
+                    <input type="text" id="trigger-input" placeholder="e.g., fake news, winning...">
+                </div>
+
+                <div class="input-group">
+                    <label>Quick Picks - Positive</label>
+                    <div class="quick-picks">
+                        ${DATA.triggerWords.positive.slice(0, 5).map(w => `<span class="quick-pick" onclick="setTrigger('${w}')">${w}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Quick Picks - Negative</label>
+                    <div class="quick-picks">
+                        ${DATA.triggerWords.negative.slice(0, 5).map(w => `<span class="quick-pick" onclick="setTrigger('${w}')">${w}</span>`).join('')}
+                    </div>
+                </div>
+
+                <button class="predict-btn" onclick="runTriggerPrediction()">
+                    <i class="fas fa-search"></i> Detect Triggers
+                </button>
+            `;
+
+            mainContent.innerHTML = `
+                <div class="chart-section animate-in" style="margin-bottom: 1.5rem;">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title"><i class="fas fa-info-circle" style="color: var(--accent);"></i> Model Purpose</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; font-size: 0.9rem; line-height: 1.7; color: var(--gray);">
+                        <p><strong style="color: var(--light);">What it does:</strong> Detects words and phrases that trigger strong emotional responses from Trump, categorizing them as positive triggers (evoking praise) or negative triggers (evoking attacks).</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">How it works:</strong> Built a trigger word lexicon by analyzing word frequency and emotional context across all speeches. Words that consistently appear with high emotional intensity (using NRCLex emotion detection) are flagged as triggers with associated valence scores.</p>
+                        <p style="margin-top: 0.75rem;"><strong style="color: var(--light);">Use case:</strong> Speechwriters, journalists, or PR teams can screen their content for words that might provoke strong reactions from Trump.</p>
+                    </div>
+                </div>
+
+                <div class="chart-section animate-in">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Trigger Word Detector</div>
+                            <div class="chart-subtitle">Identify words that trigger strong emotional responses</div>
+                        </div>
+                    </div>
+                    <div id="trigger-results" style="padding: 2rem; text-align: center; color: var(--gray);">
+                        <i class="fas fa-arrow-left" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Enter words and click "Detect Triggers"</p>
+                    </div>
+                </div>
+
+                <div class="overview-section">
+                    <div class="chart-section animate-in">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">Top Positive Triggers</div>
+                                <div class="chart-subtitle">Words that evoke positive responses</div>
+                            </div>
+                        </div>
+                        <div style="padding: 1rem;">
+                            ${DATA.triggerWords.positive.map(w => `<span class="tag positive" style="margin: 0.25rem;">${w}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="chart-section animate-in">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">Top Negative Triggers</div>
+                                <div class="chart-subtitle">Words that evoke negative responses</div>
+                            </div>
+                        </div>
+                        <div style="padding: 1rem;">
+                            ${DATA.triggerWords.negative.map(w => `<span class="tag negative" style="margin: 0.25rem;">${w}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setTrigger(word) {
+            document.getElementById('trigger-input').value = word;
+            runTriggerPrediction();
+        }
+
+        async function runTriggerPrediction() {
+            const words = document.getElementById('trigger-input').value;
+            if (!words) return;
+
+            const resultsDiv = document.getElementById('trigger-results');
+            resultsDiv.innerHTML = '<div style="padding: 2rem; text-align: center;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><p>Detecting...</p></div>';
+
+            const result = await detectTrigger(words);
+
+            const levelClass = result.triggerLevel === 'HIGH' ? 'danger' : result.triggerLevel === 'MEDIUM' ? 'warning' : 'success';
+            const valenceClass = result.valence === 'NEGATIVE' ? 'danger' : result.valence === 'POSITIVE' ? 'success' : 'warning';
+
+            resultsDiv.innerHTML = `
+                <div class="result-grid" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card primary">
+                        <div class="metric-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="metric-value">${result.triggerLevel}</div>
+                        <div class="metric-label">Trigger Level</div>
+                    </div>
+                    <div class="metric-card ${levelClass}">
+                        <div class="metric-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="metric-value">${result.score}</div>
+                        <div class="metric-label">Trigger Score</div>
+                    </div>
+                    <div class="metric-card ${valenceClass}">
+                        <div class="metric-icon"><i class="fas fa-heart"></i></div>
+                        <div class="metric-value">${result.valence}</div>
+                        <div class="metric-label">Emotional Valence</div>
+                    </div>
+                </div>
+
+                ${result.words.length > 0 ? `
+                <div class="recommendations" style="background: transparent; padding: 0;">
+                    <h3><i class="fas fa-tags"></i> Detected Trigger Words</h3>
+                    ${result.words.map(w => `
+                        <div class="recommendation-item ${w.type === 'negative' ? 'danger' : ''}">
+                            <strong>${w.word.toUpperCase()}</strong> - ${w.type.charAt(0).toUpperCase() + w.type.slice(1)} trigger
+                        </div>
+                    `).join('')}
+                </div>
+                ` : `
+                <div class="recommendations" style="background: transparent; padding: 0;">
+                    <div class="recommendation-item warning">No known trigger words detected in the input.</div>
+                </div>
+                `}
+            `;
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderModel('overview');
+        });
+    </script>
+</body>
+</html>
