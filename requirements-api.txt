@@ -1,0 +1,8 @@
+# Lightweight requirements for Flask API only
+# The API uses pre-computed data, no heavy ML libs needed
+
+flask==3.0.0
+flask-cors==4.0.0
+gunicorn==21.2.0
+pandas==2.1.4
+numpy==1.26.2
